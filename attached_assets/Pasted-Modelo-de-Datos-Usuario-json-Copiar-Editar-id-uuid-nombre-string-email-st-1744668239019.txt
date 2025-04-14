@@ -1,0 +1,83 @@
+Modelo de Datos
+🔹 Usuario
+json
+Copiar
+Editar
+{
+  "id": "uuid",
+  "nombre": "string",
+  "email": "string",
+  "telefono": "string",
+  "rol": "cliente | barbero | admin",
+  "fechaRegistro": "datetime"
+}
+🔹 Servicio
+json
+Copiar
+Editar
+{
+  "id": "uuid",
+  "nombre": "string",
+  "descripcion": "string",
+  "duracionMin": "number",
+  "precio": "number"
+}
+🔹 Cita
+json
+Copiar
+Editar
+{
+  "id": "uuid",
+  "clienteId": "uuid",
+  "barberoId": "uuid",
+  "servicioId": "uuid",
+  "fechaHora": "datetime",
+  "estado": "pendiente | confirmada | cancelada | completada"
+}
+🔹 Disponibilidad
+json
+Copiar
+Editar
+{
+  "id": "uuid",
+  "barberoId": "uuid",
+  "tipo": "fija | variable",
+  "diaSemana": "lunes | martes | ... | domingo",
+  "horaInicio": "HH:mm",
+  "horaFin": "HH:mm",
+  "fechaEspecifica": "nullable (solo si es tipo variable)"
+}
+🌐 API REST – Endpoints
+🔐 Autenticación
+(la autenticación se hace vía Firebase, no hay login tradicional)
+
+👤 Usuarios
+Método	Endpoint	Descripción
+POST	/api/usuario	Crear nuevo usuario
+GET	/api/usuario/{id}	Obtener datos de un usuario
+PUT	/api/usuario/{id}	Editar información del usuario
+DELETE	/api/usuario/{id}	Eliminar usuario
+GET	/api/usuario/email/{email}	Buscar usuario por email
+✂️ Servicios
+Método	Endpoint	Descripción
+GET	/api/servicio	Obtener lista de servicios
+POST	/api/servicio	Crear nuevo servicio
+PUT	/api/servicio/{id}	Editar servicio
+DELETE	/api/servicio/{id}	Eliminar servicio
+📅 Citas
+Método	Endpoint	Descripción
+GET	/api/cita/cliente/{clienteId}	Ver citas de un cliente
+GET	/api/cita/barbero/{barberoId}	Ver citas del barbero
+POST	/api/cita	Crear nueva cita
+PUT	/api/cita/{id}	Actualizar estado de la cita
+DELETE	/api/cita/{id}	Cancelar cita
+🕐 Disponibilidad
+Método	Endpoint	Descripción
+GET	/api/disponibilidad/barbero/{barberoId}	Ver disponibilidad del barbero
+GET	/api/disponibilidad/barbero/{barberoId}/servicio/{servicioId}	Ver horarios disponibles para servicio y barbero
+POST	/api/disponibilidad	Crear disponibilidad
+DELETE	/api/disponibilidad/{id}	Eliminar disponibilidad
+🧪 Extra
+Todos los endpoints usan application/json
+
+Para la lógica de cita, recuerda que si el servicio dura 30 minutos y el barbero tiene bloques de 10:00 a 14:00, deberás validar que no se cruce con otra cita activa o confirmada.
