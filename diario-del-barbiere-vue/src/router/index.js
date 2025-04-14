@@ -49,5 +49,25 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('jwt')
+  const usuarioStorage = localStorage.getItem('usuario')
+  const usuario = usuarioStorage ? JSON.parse(usuarioStorage) : null
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+
+  if (requiresAuth && !token) {
+    // 🔐 No autenticado y quiere entrar a una ruta privada
+    if (to.path !== '/login') {
+      return next('/login')
+    }
+  }
+
+  // 🔄 Si la ruta requiere un rol específico
+  if (to.meta.role && usuario?.rol !== to.meta.role) {
+    return next('/') // redirige al home si no tiene el rol correcto
+  }
+
+  next()
+})
 
 export default router
