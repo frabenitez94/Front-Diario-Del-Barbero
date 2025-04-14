@@ -22,6 +22,12 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+})
 const facebookProvider = new FacebookAuthProvider()
+facebookProvider.setCustomParameters({
+  display: 'popup'
+})
 
 export { auth, googleProvider, facebookProvider, signInWithPopup }
