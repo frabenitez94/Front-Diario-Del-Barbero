@@ -4,6 +4,7 @@
     <button @click="loginWithGoogle">Iniciar con Google</button>
     <button @click="loginWithFacebook">Iniciar con Facebook</button>
     <button @click="loginWithApple">Iniciar con Apple</button>
+    <button v-if="isDevelopment" @click="loginWithTestUser" class="test-button">Login de Prueba</button>
   </div>
 
   <!-- Modal para rol y teléfono -->
@@ -34,7 +35,8 @@ export default {
       mostrarModal: false,
       usuarioSocial: null,
       rolSeleccionado: '',
-      telefono: ''
+      telefono: '',
+      isDevelopment: import.meta.env.DEV
     }
   },
   methods: {
@@ -70,6 +72,14 @@ export default {
     },
     loginWithApple() {
       alert('🔒 Login con Apple pendiente de integrar');
+    },
+    loginWithTestUser() {
+      this.usuarioSocial = {
+        nombre: 'Usuario Prueba',
+        correo: 'test@example.com',
+        proveedorLogin: 'google'
+      };
+      this.verificarUsuario();
     },
     verificarUsuario() {
       const correoEncoded = encodeURIComponent(this.usuarioSocial.correo)
